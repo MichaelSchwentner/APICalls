@@ -1,5 +1,6 @@
 package com.example.apicalls
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.apicalls.data.AppRepository
@@ -19,7 +20,11 @@ class MainViewModel : ViewModel() {
 
     private fun  loadCharacters() {
         viewModelScope.launch {
-            repository.loadCharacters()
+            try {
+                repository.loadCharacters()
+            } catch (e: Exception) {
+                Log.e("MainViewModel", "error loading charackters $e")
+            }
         }
     }
 }
