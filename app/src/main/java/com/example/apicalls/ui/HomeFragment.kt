@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.example.apicalls.ApiStatus
 import com.example.apicalls.MainViewModel
 import com.example.apicalls.adapter.GotAdapter
 import com.example.apicalls.databinding.FragmentHomeBinding
@@ -33,6 +34,23 @@ class HomeFragment : Fragment() {
 
         viewModel.characters.observe(viewLifecycleOwner) {
             gotAdapter.submitList(it)
+        }
+        viewModel.loading.observe(viewLifecycleOwner) {
+            when (it) {
+                ApiStatus.LOADING -> {
+                    binding.homeErrorImage.visibility = View.GONE
+                    binding.homeProgressbar.visibility = View.VISIBLE
+                }
+                ApiStatus.DONE -> {
+                    binding.homeErrorImage.visibility = View.GONE
+                    binding.homeProgressbar.visibility = View.GONE
+                }
+                ApiStatus.ERROR -> {
+                    binding.homeErrorImage.visibility = View.VISIBLE
+                    binding.homeProgressbar.visibility = View.GONE
+
+                }
+            }
         }
     }
 }
